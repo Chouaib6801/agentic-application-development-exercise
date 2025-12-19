@@ -27,3 +27,4 @@ class Context(BaseModel):
         """Add a tool result to context."""
         self.tool_results.append({"tool": tool_name, "result": result})
 
+

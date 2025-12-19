@@ -21,3 +21,4 @@ def process_prompt(prompt: str) -> str:
     # TODO: Implement tool calling loop
     return response
 
+

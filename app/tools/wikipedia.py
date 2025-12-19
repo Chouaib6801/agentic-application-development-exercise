@@ -15,3 +15,4 @@ def search_wikipedia(query: str) -> str:
     except requests.RequestException as e:
         return f"Error searching Wikipedia: {e}"
 
+
