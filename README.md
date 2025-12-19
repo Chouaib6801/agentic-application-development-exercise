@@ -1,6 +1,6 @@
 # Agentic Application Development Exercise
 
-A minimal agentic application with job queue and LLM integration.
+A minimal agentic application with SQLite job queue and LLM integration.
 
 ## Quickstart
 
@@ -20,7 +20,13 @@ cp .env.example .env
 ### 3. Submit a job
 
 ```bash
-python main.py submit "What is the capital of France?"
+python main.py submit --text "What is the capital of France?"
+```
+
+With optional image and context directory:
+
+```bash
+python main.py submit --text "Describe this" --image path/to/image.png --context-dir ./docs
 ```
 
 ### 4. Run the worker
@@ -39,9 +45,11 @@ python main.py status <job_id>
 
 ```
 ├── main.py              # Entry point
+├── data/                # SQLite database (auto-created)
+├── outputs/             # Job results
 ├── app/
 │   ├── cli.py           # Typer CLI commands
-│   ├── db.py            # JSON-based job storage
+│   ├── db.py            # SQLite job queue
 │   ├── worker.py        # Job processor
 │   ├── agent.py         # Agent orchestration
 │   ├── llm.py           # OpenAI API client
