@@ -35,6 +35,14 @@ python main.py submit --text "Describe this" --image path/to/image.png --context
 python main.py worker
 ```
 
+The worker will:
+- Continuously poll for pending jobs
+- Process each job and generate `outputs/<job_id>/report.md`
+- Write logs to `outputs/<job_id>/run.log`
+- Update job status (RUNNING → DONE or FAILED)
+
+Press `Ctrl+C` for graceful shutdown.
+
 ### 5. Check job status
 
 ```bash
@@ -46,7 +54,11 @@ python main.py status <job_id>
 ```
 ├── main.py              # Entry point
 ├── data/                # SQLite database (auto-created)
-├── outputs/             # Job results
+│   └── jobs.db
+├── outputs/             # Job results (auto-created)
+│   └── <job_id>/
+│       ├── report.md    # Generated report
+│       └── run.log      # Processing log
 ├── app/
 │   ├── cli.py           # Typer CLI commands
 │   ├── db.py            # SQLite job queue
@@ -57,3 +69,10 @@ python main.py status <job_id>
 │   └── tools/
 │       └── wikipedia.py # Wikipedia search tool
 ```
+
+## Job Lifecycle
+
+1. **PENDING** - Job created via `submit`
+2. **RUNNING** - Worker claimed the job
+3. **DONE** - Processing completed, `result_path` set
+4. **FAILED** - Error occurred, `error` field set
